@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the attendance for the user.
+     */
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

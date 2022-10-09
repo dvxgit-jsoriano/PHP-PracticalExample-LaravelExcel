@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\TestController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +22,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return view('dashboard');
+        $users = User::paginate(10);
+        return view('dashboard', compact('users'));
     })->name('dashboard');
 
     Route::resource('attendance', AttendanceController::class);
+
+    Route::get('test-seed-attendances', [TestController::class, 'testSeedAttendances']);
 });
 
 require __DIR__ . '/auth.php';
