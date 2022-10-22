@@ -13,26 +13,32 @@ class TestController extends Controller
 {
     function testSeedAttendances()
     {
+        /**
+         * Initialize current date and end date for one month duration (range)
+         */
         $current_date = Carbon::create('2022-03-01');
         $start_date = Carbon::create('2022-03-01');
         $end_date = Carbon::create('2022-03-31');
 
         do {
-            /* $current_time = Carbon::create($current_date->toDateTimeString());
-            $end_time = Carbon::create($current_date->toDateTimeString());
-            $current_time->addHours(9);
-            $end_time->addHours(17); */
-
             $users = User::all();
             foreach ($users as $user) {
+                /**
+                 * Reset current time and end time for the day
+                 */
                 $current_time = Carbon::create($current_date->toDateTimeString());
                 $end_time = Carbon::create($current_date->toDateTimeString());
                 $current_time->addHours(9);
                 $end_time->addHours(17);
 
-                // If absent, chance 80%
+                /**
+                 * 80% chance for absent on the current date
+                 */
                 if (rand(0, 100) > 80) continue;
 
+                /**
+                 * Use transaction to avoid data inconsistency
+                 */
                 DB::transaction(function () use ($current_date, $current_time, $end_time, $user) {
                     $attendance = Attendance::create([
                         'user_id' => $user->id,
@@ -43,18 +49,16 @@ class TestController extends Controller
                         'overtime' => 0
                     ]);
 
-
-
                     $time_in = rand(0, 2);
                     $status = 'TIME IN';
 
                     switch ($time_in) {
                         case 0: // TIME IN EARLY
-                            $secs_early = rand(0, 900); // random 15 mins
+                            $secs_early = rand(0, 900); // random 15 mins early
                             $current_time->subSeconds($secs_early);
                             break;
                         case 1: // TIME IN LATE
-                            $secs_late = rand(0, 900); // random 15 mins
+                            $secs_late = rand(0, 900); // random 15 mins late
                             $current_time->subSeconds($secs_late);
                             break;
                         case 2: // TIME IN PRE-SHIFT OT
@@ -71,6 +75,9 @@ class TestController extends Controller
                             'status' => $status
                         ]);
 
+                        /**
+                         * If pre shift OT detected, advance the time and switch off flag
+                         */
                         if ($time_in_flag && $time_in == 2) {
                             $attendance_log = AttendanceLog::create([
                                 'attendance_id' => $attendance->id,
