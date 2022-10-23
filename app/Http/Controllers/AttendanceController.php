@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AttendanceExport;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceController extends Controller
 {
@@ -15,9 +17,11 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
+        //$attendances = Attendance::with('user', 'attendanceLogs')->paginate(10);
 
-        return view('attendance.index', compact('users'));
+        $attendances = User::with('attendance')->paginate(10);
+
+        return view('attendance.index', compact('attendances'));
     }
 
     /**
@@ -84,5 +88,10 @@ class AttendanceController extends Controller
     public function destroy(Attendance $attendance)
     {
         //
+    }
+
+    public function export()
+    {
+        return Excel::download(new AttendanceExport, 'users.xlsx');
     }
 }
