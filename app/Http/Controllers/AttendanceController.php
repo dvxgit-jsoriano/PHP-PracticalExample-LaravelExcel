@@ -17,11 +17,9 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //$attendances = Attendance::with('user', 'attendanceLogs')->paginate(10);
+        $users = User::with('attendance')->paginate(10);
 
-        $attendances = User::with('attendance')->paginate(10);
-
-        return view('attendance.index', compact('attendances'));
+        return view('attendance.index', compact('users'));
     }
 
     /**

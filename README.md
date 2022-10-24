@@ -6,6 +6,10 @@
 
 - [**Laravel Excel**](https://laravel-excel.com/) is a Supercharged Excel exports and imports in Laravel
 
+## Screenshots
+
+![Attendance Report Table](screenshots/1.png)
+
 ## Developer
 
 - [Jerome Soriano](https://github.com/dvxgit-jsoriano)

@@ -21,69 +21,63 @@
                 </div>
 
                 <div class="table-responsive overflow-auto">
-                    <table class="border-collapse border border-slate-400 mt-2" style="width: 2000px">
+                    <table class="border-collapse border border-slate-400 mt-2" style="width: 8000px">
                         <thead class="bg-blue-100">
                             <tr>
-                                <th class="border border-slate-300 p-2">Name</th>
-                                <!-- 2022-10-01 -->
-                                <th class="border border-slate-300 p-2">2022-10-01</th>
-                                <th class="border border-slate-300 p-2">Notes</th>
-                                <!-- 2022-10-02 -->
-                                <th class="border border-slate-300 p-2">2022-10-02</th>
-                                <th class="border border-slate-300 p-2">Notes</th>
-                                <!-- 2022-10-03 -->
-                                <th class="border border-slate-300 p-2">2022-10-03</th>
-                                <th class="border border-slate-300 p-2">Notes</th>
-                                <!-- 2022-10-04 -->
-                                <th class="border border-slate-300 p-2">2022-10-04</th>
-                                <th class="border border-slate-300 p-2">Notes</th>
+                                <th class="border border-slate-300 p-2" style="width: 200px">Name</th>
+                                @php
+                                    $dt = Carbon\Carbon::parse('2022-03-01');
+                                    $end = Carbon\Carbon::parse('2022-03-30');
+                                @endphp
+                                @while ($dt < $end)
+                                    <th class="border border-slate-300 p-2" style="width: 120px">
+                                        {{ $dt->toDateString() }}</th>
+                                    <th class="border border-slate-300 p-2" style="width: 160px">Notes</th>
+                                    <?php $dt->addDay(); ?>
+                                @endwhile
                             </tr>
                         </thead>
                         <tbody>
                             {{-- Active User Loop --}}
-                            @foreach ($attendances as $attendance)
+                            @foreach ($users as $user)
                                 <tr>
-                                    <td class="border-slate-300 p-2">{{ $attendance->name }}</td>
-                                    {{-- Set a counter for testing 4 dates --}}
+                                    <td class="border-slate-300 p-2">{{ $user->name }}</td>
+
+
                                     @php
-                                        $ctr = 0;
+                                        $start = Carbon\Carbon::parse('2022-03-01');
+                                        $end = Carbon\Carbon::parse('2022-03-30');
+
+                                        while ($start < $end) {
+                                            $print_date = '<td class="border-slate-300 p-2 text-center">'.$start->toDateString().'</td>';
+                                            $print_remarks = '<td class="border-slate-300 p-2">None</td>';
+                                            $i=0;
+                                            foreach ($user->attendance as $att) {
+                                                if ($start->toDateString() == $att->attendance_date) {
+                                                    $print_date = '<td class="border-slate-300 p-2 text-center">' . $att->attendance_date . '</td>';
+                                                    $print_remarks = '<td class="border-slate-300 p-2">' . $att->remarks . '</td>';
+                                                    break;
+                                                }
+                                                $i++;
+                                            }
+                                            echo $print_date;
+                                            echo $print_remarks;
+                                            $start->addDay();
+                                        }
+
                                     @endphp
-                                    {{-- Column Loop for 4 days starting Oct 1 to 4 --}}
-                                    @foreach ($attendance->attendance as $per_day)
-                                        @if ($ctr < 4)
-                                            <td class="border-slate-300 p-2 text-center">{{ $per_day->shift_start }}
-                                            </td>
-                                            <td class="border-slate-300 p-2">{{ $per_day->remarks }}</td>
-                                        @endif
-                                        {{-- Increment counter --}}
-                                        @php
-                                            $ctr++;
-                                        @endphp
-                                    @endforeach
+
+
+
                                 </tr>
                             @endforeach
                         </tbody>
-                        {{-- <thead class="bg-blue-100">
-                            <tr>
-                                <th class="border border-slate-300 p-2">ID</th>
-                                <th class="border border-slate-300 p-2">Name</th>
-                                <th class="border border-slate-300 p-2">Updated At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($attendances as $attendance)
-                                <tr>
-                                    <td class="border-slate-300 p-2">{{ $attendance->id }}</td>
-                                    <td class="border-slate-300 p-2">{{ $attendance->user->name }}</td>
-                                    <td class="border-slate-300 p-2">{{ $attendance->updated_at }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody> --}}
+
                     </table>
                 </div>
 
 
-                <div class="mt-2">{{ $attendances->links() }}</div>
+                <div class="mt-2">{{ $users->links() }}</div>
 
             </div>
         </div>
