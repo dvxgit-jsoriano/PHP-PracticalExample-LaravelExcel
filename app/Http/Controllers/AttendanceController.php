@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AttendanceExport;
+use App\Exports\TestExport;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class AttendanceController extends Controller
     public function index()
     {
         $users = User::with('attendance')->paginate(10);
+        //return $users;
 
         return view('attendance.index', compact('users'));
     }
@@ -88,8 +90,8 @@ class AttendanceController extends Controller
         //
     }
 
-    public function export()
+    public function exportExcel()
     {
-        return Excel::download(new AttendanceExport, 'users.xlsx');
+        return Excel::download(new TestExport, 'attendance.xlsx');
     }
 }

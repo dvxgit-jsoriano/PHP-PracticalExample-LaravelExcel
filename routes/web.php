@@ -31,4 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('test-seed-attendances', [TestController::class, 'testSeedAttendances']);
 });
 
+Route::get('attendance/test/', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
+
+
+
 require __DIR__ . '/auth.php';

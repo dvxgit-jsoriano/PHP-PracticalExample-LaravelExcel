@@ -43,23 +43,26 @@
                                 <tr>
                                     <td class="border-slate-300 p-2">{{ $user->name }}</td>
 
-
                                     @php
                                         $start = Carbon\Carbon::parse('2022-03-01');
                                         $end = Carbon\Carbon::parse('2022-03-30');
 
                                         while ($start < $end) {
-                                            $print_date = '<td class="border-slate-300 p-2 text-center">'.$start->toDateString().'</td>';
+                                            $print_date = '<td class="border-slate-300 p-2 text-center">' . $start->toDateString() . '</td>';
                                             $print_remarks = '<td class="border-slate-300 p-2">None</td>';
-                                            $i=0;
+                                            $i = 0;
+                                            $found = false;
                                             foreach ($user->attendance as $att) {
                                                 if ($start->toDateString() == $att->attendance_date) {
                                                     $print_date = '<td class="border-slate-300 p-2 text-center">' . $att->attendance_date . '</td>';
                                                     $print_remarks = '<td class="border-slate-300 p-2">' . $att->remarks . '</td>';
+                                                    $found = true;
                                                     break;
                                                 }
+                                                $found = false;
                                                 $i++;
                                             }
+                                            if(!$found) $print_remarks = '<td class="border-slate-300 p-2">ABSENT</td>';
                                             echo $print_date;
                                             echo $print_remarks;
                                             $start->addDay();
@@ -76,7 +79,6 @@
                     </table>
                 </div>
 
-
                 <div class="mt-2">{{ $users->links() }}</div>
 
             </div>
@@ -87,5 +89,8 @@
 <script>
     function exportExcel() {
         console.log("exporting!");
+        token = "{{ csrf_token() }}";
+        //window.location = "{{ route('attendance.export') }}";
+        window.open("{{ route('attendance.export') }}", "_blank");
     }
 </script>

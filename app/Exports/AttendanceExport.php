@@ -2,16 +2,16 @@
 
 namespace App\Exports;
 
-use App\Models\Attendance;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class AttendanceExport implements FromCollection
+class AttendanceExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    public function view(): View
     {
-        return Attendance::all();
+        return view('attendance.export', [
+            'users' => User::with('attendance')->get()
+        ]);
     }
 }
