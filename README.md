@@ -8,7 +8,11 @@
 
 ## Screenshots
 
-![Attendance Report Table](screenshots/1.png)
+![Users List](screenshots/1.png)
+
+![Attendance Report Table](screenshots/2.png)
+
+![Excel Export](screenshots/3.png)
 
 ## Developer
 

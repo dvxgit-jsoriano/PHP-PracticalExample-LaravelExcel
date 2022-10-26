@@ -11,11 +11,7 @@
 
 
                 <div class="flex mt-2 justify-between">
-                    <div>Attendance Logs</div>
-                    <div>
-                        <button id="bFilter" class="bg-red-600 text-white p-2 rounded-md hover:bg-red-700">Filter</button>
-                        <button id="bExport" class="bg-green-600 text-white p-2 rounded-md hover:bg-green-700">Export</button>
-                    </div>
+                    <div>User List</div>
                 </div>
 
                 <table class="border-collapse border border-slate-400 w-full mt-2">

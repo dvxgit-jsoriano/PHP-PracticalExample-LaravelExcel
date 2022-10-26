@@ -20,6 +20,9 @@ class TestController extends Controller
         $start_date = Carbon::create('2022-03-01');
         $end_date = Carbon::create('2022-03-31');
 
+        AttendanceLog::truncate();
+        Attendance::query()->delete();
+
         do {
             $users = User::all();
             foreach ($users as $user) {
