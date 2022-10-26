@@ -29,9 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('attendance', AttendanceController::class);
 
     Route::get('test-seed-attendances', [TestController::class, 'testSeedAttendances']);
+    Route::get('export', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
 });
 
-Route::get('attendance/test/', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
+
 
 
 

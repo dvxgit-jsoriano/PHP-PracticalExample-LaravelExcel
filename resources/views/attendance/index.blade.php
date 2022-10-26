@@ -90,7 +90,7 @@
     function exportExcel() {
         console.log("exporting!");
         token = "{{ csrf_token() }}";
-        //window.location = "{{ route('attendance.export') }}";
+
         window.open("{{ route('attendance.export') }}", "_blank");
     }
 </script>

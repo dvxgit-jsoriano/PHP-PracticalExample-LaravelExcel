@@ -92,6 +92,6 @@ class AttendanceController extends Controller
 
     public function exportExcel()
     {
-        return Excel::download(new TestExport, 'attendance.xlsx');
+        return Excel::download(new AttendanceExport, 'attendance.xlsx');
     }
 }
